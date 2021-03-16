@@ -23,6 +23,11 @@
   stat:
     path: "{{ php_fpm_pool_conf_path | dirname }}"
   register: php_fpm_pool_conf_path_dir_stat
+  
+- name: Define php_configure_php_fpm
+  set_fact:
+    php_configure_php_fpm: true
+  when: php_enable_php_fpm and php_configure_php_fpm is not defined
 
 - name: Ensure the default pool directory exists.
   file:
@@ -41,7 +46,7 @@
     group: root
     mode: 0644
     force: false
-  when: php_enable_php_fpm
+  when: php_configure_php_fpm
 
 - name: Configure php-fpm pool (if enabled).
   lineinfile:
@@ -67,7 +72,7 @@
       line: "pm.min_spare_servers = {{ php_fpm_pm_min_spare_servers }}"
     - regexp: '^pm\.max_spare_servers.?=.+$'
       line: "pm.max_spare_servers = {{ php_fpm_pm_max_spare_servers }}"
-  when: php_enable_php_fpm
+  when: php_configure_php_fpm
   notify: restart php-fpm
 
 - name: Ensure php-fpm is started and enabled at boot (if configured).
