@@ -19,6 +19,11 @@
     php_fpm_pool_group: "{{ __php_fpm_pool_group }}"
   when: php_fpm_pool_group is not defined
 
+- name: Override php_fpm_listen when php_fpm_use_default_socket is true
+  set_fact:
+    php_fpm_listen: "{{ __php_fpm_listen_socket }}"
+  when: php_fpm_use_default_socket | bool
+
 - name: Stat php_fpm_pool_conf_path
   stat:
     path: "{{ php_fpm_pool_conf_path | dirname }}"
