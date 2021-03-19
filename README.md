@@ -28,11 +28,13 @@ If your usage of PHP is tied to a web server (e.g. Apache or Nginx), leave this 
 
     webserver: "apache"
 
-The default values for the HTTP server deamon are `httpd` (used by Apache) for RedHat/CentOS, or `apache2` (also used by Apache) for Debian/Ubuntu. If you are running another webserver (for example, `nginx`), change this value to the name of the daemon under which the webserver runs.
+Valid options are `apache` and `nginx`. The value of this variable determines the value of the following dynamic variables that are defined in `tasks/flexible_webserver.yml`: 
+- `webserver_user` used to set the default `php_fpm_pool_user`.
+- `webserver_service` used to set the default for `php_webserver_daemon`
 
     webserver_user_home_dir_chown: true
 
-By default, this role will `chown` the webserver_user_home_dir, so the webserver_user can write to it. To disable this, set `webserver_user_home_dir_chown` to false.
+By default, this role will `chown` the `webserver_user_home_dir` (dynamic variable defined thats defined in `tasks/fexible_webserver.yml` based on `webserver_user`), so the `webserver_user` can write to it. To disable this, set `webserver_user_home_dir_chown` to false.
 
     php_enablerepo: ""
 
@@ -75,12 +77,22 @@ Control over the fpm daemon's state; set these to `stopped` and `false` if you w
 
 The handler restarts PHP-FPM by default. Setting the value to `reloaded` will reload the service, intead of restarting it.
 
+    php_fpm_use_default_socket: true
+
+When set to true, this variable will override `php_fpm_listen` to the distro's default `php_fpm_listen_socket` (`/run/php-fpm/www.sock` for RedHat-based distros and `"/run/php/php{{ php_default_version_debian }}-fpm.sock"` for Debian-based distros). Change to false to keep default behavior.
+
     php_fpm_listen: "127.0.0.1:9000"
     php_fpm_listen_allowed_clients: "127.0.0.1"
     php_fpm_pm_max_children: 50
     php_fpm_pm_start_servers: 5
     php_fpm_pm_min_spare_servers: 5
     php_fpm_pm_max_spare_servers: 5
+
+
+    php_fpm_pool_user: "{{ webserver_user }}"
+    php_fpm_pool_group: "{{ webserver_user }}"
+
+By default, `php_fpm_pool_user` and `php_fpm_pool_group` are set to the default user for `{{ webserver }}`.
 
 Specific settings inside the default `www.conf` PHP-FPM pool. If you'd like to manage additional settings, you can do so either by replacing the file with your own template or using `lineinfile` like this role does inside `tasks/configure-fpm.yml`.
 
@@ -90,8 +102,6 @@ Specific settings inside the default `www.conf` PHP-FPM pool. If you'd like to m
 
 By default, all the extra defaults below are applied through the php.ini included with this role. You can self-manage your php.ini file (if you need more flexility in its configuration) by setting this to `false` (in which case all the below variables will be ignored).
 
-    php_fpm_pool_user: "[apache|nginx|other]" # default varies by OS
-    php_fpm_pool_group: "[apache|nginx|other]" # default varies by OS
     php_memory_limit: "256M"
     php_max_execution_time: "60"
     php_max_input_time: "60"
