@@ -26,9 +26,13 @@ A list of extra PHP packages to install without overriding the default list.
 
 If your usage of PHP is tied to a web server (e.g. Apache or Nginx), leave this default value. If you are using PHP server-side or to run some small application, set this value to `false` so this role doesn't attempt to interact with a web server.
 
-    php_webserver_daemon: "httpd"
+    webserver: "apache"
 
 The default values for the HTTP server deamon are `httpd` (used by Apache) for RedHat/CentOS, or `apache2` (also used by Apache) for Debian/Ubuntu. If you are running another webserver (for example, `nginx`), change this value to the name of the daemon under which the webserver runs.
+
+    webserver_user_home_dir_chown: true
+
+By default, this role will `chown` the webserver_user_home_dir, so the webserver_user can write to it. To disable this, set `webserver_user_home_dir_chown` to false.
 
     php_enablerepo: ""
 
