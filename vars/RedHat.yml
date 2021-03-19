@@ -28,6 +28,16 @@ __php_fpm_daemon: php-fpm
 __php_fpm_conf_path: "/etc/fpm"
 __php_fpm_pool_conf_path: "/etc/php-fpm.d/www.conf"
 
-__php_fpm_pool_user: apache
-__php_fpm_pool_group: apache
+#__php_fpm_pool_user: apache
+#__php_fpm_pool_group: apache
 __php_fpm_listen_socket: /run/php-fpm/www.sock
+
+apache_user: apache
+apache_home_dir: /usr/share/httpd
+apache_service: httpd
+nginx_user: nginx
+nginx_home_dir: /usr/lib/nginx
+nginx_service: nginx
+
+php_mysql_package: php-mysql
+php_pgsql_package: php-pgsql

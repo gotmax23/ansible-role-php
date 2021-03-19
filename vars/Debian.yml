@@ -35,6 +35,15 @@ __php_fpm_daemon: php{{ php_default_version_debian }}-fpm
 __php_fpm_conf_path: "/etc/php/{{ php_default_version_debian }}/fpm"
 __php_fpm_pool_conf_path: "{{ __php_fpm_conf_path }}/pool.d/www.conf"
 
-__php_fpm_pool_user: www-data
-__php_fpm_pool_group: www-data
+#__php_fpm_pool_user: www-data
+#__php_fpm_pool_group: www-data
 __php_fpm_listen_socket: "/run/php/php{{ php_version }}-fpm.sock"
+
+apache_user: www-data
+www-data_home_dir: /var/www
+apache_service: apache2
+nginx_user: www-data
+nginx_service: nginx
+
+php_mysql_package: "php{{ php_default_version_debian }}-mysql"
+php_pgsql_package: "php{{ php_default_version_debian }}-pgsql"
