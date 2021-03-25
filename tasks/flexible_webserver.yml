@@ -7,7 +7,7 @@
 
 - name: set permissions on webserver_user_home_dir
   file:
-    path: "{{ webserver_home_dir }}"
+    path: "{{ webserver_user_home_dir }}"
     state: directory
     recurse: true
     owner: "{{ webserver_user }}"
