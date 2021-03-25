@@ -3,7 +3,7 @@
   set_fact:
     webserver_user: "{{ lookup('vars', webserver + '_user') }}"
     webserver_service: "{{ lookup('vars', webserver + '_service') }}"
-    webserver_user_home_dir: "{{ lookup('vars', webserver_user + 'home_dir') }}"
+    webserver_user_home_dir: "{{ lookup('vars', webserver_user + '_home_dir') }}"
 
 - name: set permissions on webserver_user_home_dir
   file:
