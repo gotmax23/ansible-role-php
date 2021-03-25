@@ -1,4 +1,4 @@
---
+---
 - name: define webserver_user and webserver_service
   set_fact:
     webserver_user: "{{ lookup('vars', webserver + '_user') }}"
